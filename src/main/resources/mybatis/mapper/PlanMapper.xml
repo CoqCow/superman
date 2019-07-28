@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xiaomi.nrb.superman.dao.PlanMapper">
+    <resultMap id="BaseResultMap" type="com.xiaomi.nrb.superman.domain.Plan">
+        <constructor>
+            <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="title" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="content" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="start_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="end_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="process_first_img" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="process_second_img" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="process_third_img" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="ctime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="utime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, user_id, title, content, start_time, end_time, type, status, process_first_img, 
+    process_second_img, process_third_img, ctime, utime
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from plan
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+
+    <insert id="insertSelective" parameterType="com.xiaomi.nrb.superman.domain.Plan">
+        insert into plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="processFirstImg != null">
+                process_first_img,
+            </if>
+            <if test="processSecondImg != null">
+                process_second_img,
+            </if>
+            <if test="processThirdImg != null">
+                process_third_img,
+            </if>
+            <if test="ctime != null">
+                ctime,
+            </if>
+            <if test="utime != null">
+                utime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="processFirstImg != null">
+                #{processFirstImg,jdbcType=VARCHAR},
+            </if>
+            <if test="processSecondImg != null">
+                #{processSecondImg,jdbcType=VARCHAR},
+            </if>
+            <if test="processThirdImg != null">
+                #{processThirdImg,jdbcType=VARCHAR},
+            </if>
+            <if test="ctime != null">
+                #{ctime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="utime != null">
+                #{utime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xiaomi.nrb.superman.domain.Plan">
+        update plan
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="processFirstImg != null">
+                process_first_img = #{processFirstImg,jdbcType=VARCHAR},
+            </if>
+            <if test="processSecondImg != null">
+                process_second_img = #{processSecondImg,jdbcType=VARCHAR},
+            </if>
+            <if test="processThirdImg != null">
+                process_third_img = #{processThirdImg,jdbcType=VARCHAR},
+            </if>
+            <if test="ctime != null">
+                ctime = #{ctime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="utime != null">
+                utime = #{utime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+</mapper>
