@@ -55,6 +55,7 @@ public class User implements Serializable {
      * 用户状态，默认1
      */
     private Integer status;
+
     /**
      * 创建时间
      */

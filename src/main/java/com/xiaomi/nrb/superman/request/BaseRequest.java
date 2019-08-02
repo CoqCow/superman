@@ -10,9 +10,9 @@ public class BaseRequest implements Serializable {
     private static final Integer MAX_PAGE = 1000;
     private static final Integer MAX_PAGE_SIZE = 100;
     /**
-     * 微信unionId
+     * 微信code
      */
-    private String unionId;
+    private String code;
     /**
      * 用户id
      */

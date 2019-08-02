@@ -13,10 +13,13 @@ public enum ApiEnum {
     USER_EXIST(410, "该用户已注册"),
     USER_REGISTER_ERROR(411, "用户注册失败"),
     USER_LOGIN_ERROR(412, "用户登录态丢失"),
-    USER_NOT_REGISTER(413, "用户不存在"),
     LONG_OUT(420, "未登录"),
-    ERROR(500, "服务端异常");
+    ERROR(500, "服务端异常"),
 
+
+    //用户code
+    USER_NOT_REGISTER(1000, "用户没有注册"),
+    USER_CODE_EXPIRED(1001, "微信code过期");
     private int code;
     private String value;
 

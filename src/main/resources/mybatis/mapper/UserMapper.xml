@@ -29,7 +29,12 @@
         from user
         where id = #{id,jdbcType=BIGINT}
     </select>
-
+    <select id="selectByOpenId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where  open_id = #{openId,jdbcType=VARCHAR}
+    </select>
 
     <insert id="insertSelective" parameterType="com.xiaomi.nrb.superman.domain.User">
         insert into user
