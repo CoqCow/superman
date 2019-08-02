@@ -1,16 +1,14 @@
 package com.xiaomi.nrb.superman.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.xiaomi.nrb.superman.annotation.CheckLogin;
 import com.xiaomi.nrb.superman.common.ApiEnum;
 import com.xiaomi.nrb.superman.common.Result;
-import com.xiaomi.nrb.superman.dao.UserMapper;
 import com.xiaomi.nrb.superman.domain.User;
 import com.xiaomi.nrb.superman.request.BaseRequest;
+import com.xiaomi.nrb.superman.request.RegisterReq;
 import com.xiaomi.nrb.superman.response.UserInfoRes;
 import com.xiaomi.nrb.superman.service.TokenService;
 import com.xiaomi.nrb.superman.service.UserService;
-import com.xiaomi.nrb.superman.utils.HttpRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +25,7 @@ import javax.annotation.Resource;
  **/
 @RestController
 @RequestMapping("/superman/user/green")
+@Slf4j
 public class UserController {
 
     @Resource
@@ -35,15 +34,11 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    public static String wechatSecretKey = "23fb54793c2d18133f8173267c10d775";
-    public static String wechatAppId = "wx2627e0455c40a3dc";
-
-
     @RequestMapping("/getUserInfo")
     public Result getUserInfo(@RequestBody BaseRequest request) {
         //1、code 机制 微信登陆态
         if (StringUtils.isBlank(request.getToken()) || !tokenService.validateToken(request.getToken())) {
-            String openId = getOpneid(request.getCode());
+            String openId = userService.getOpneid(request.getCode());
 
             User user = null;
             if (StringUtils.isBlank(openId)) {
@@ -81,19 +76,18 @@ public class UserController {
 
 
     @RequestMapping("/register")
-    public Result register(@RequestBody BaseRequest request) {
-        return Result.ok(null);
-    }
-
-
-    public static String getOpneid(String code) {
-        if (StringUtils.isBlank(code)) return null;
-        String params = "appid=" + wechatAppId + "&secret=" + wechatSecretKey + "&js_code=" + code + "&grant_type=authorization_code";
-        String sr = HttpRequest.sendGet("https://api.weixin.qq.com/sns/jscode2session", params);
-        JSONObject json = JSONObject.parseObject(sr);
-        if (null == json.get("openid")) {
-            return null;
+    public Result register(@RequestBody RegisterReq request) {
+        if (StringUtils.isBlank(request.getNickName()) || StringUtils.isBlank(request.getAvartarUrl())) {
+            return Result.fail(ApiEnum.PARAM_INVALID.getCode());
         }
-        return json.get("openid").toString();
+        try {
+            return userService.registerUser(request);
+        } catch (Exception e) {
+            log.error("UserController.register.error:", e);
+            return Result.fail(ApiEnum.ERROR.getCode());
+        }
+
     }
+
+
 }

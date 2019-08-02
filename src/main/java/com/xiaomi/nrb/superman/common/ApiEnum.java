@@ -10,8 +10,6 @@ public enum ApiEnum {
     SUCCESS(200, "success"),
     PARAM_INVALID(400, "参数错误"),
     TOKEN_INVALID(401, "token不合法"),
-    USER_EXIST(410, "该用户已注册"),
-    USER_REGISTER_ERROR(411, "用户注册失败"),
     USER_LOGIN_ERROR(412, "用户登录态丢失"),
     LONG_OUT(420, "未登录"),
     ERROR(500, "服务端异常"),
@@ -19,7 +17,9 @@ public enum ApiEnum {
 
     //用户code
     USER_NOT_REGISTER(1000, "用户没有注册"),
-    USER_CODE_EXPIRED(1001, "微信code过期");
+    USER_CODE_EXPIRED(1001, "微信code过期"),
+    USER_EXIST(1002, "用户已经注册"),
+    USER_REGISTER_ERROR(1003, "用户注册失败");
     private int code;
     private String value;
 

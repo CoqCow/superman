@@ -1,6 +1,9 @@
 package com.xiaomi.nrb.superman.service;
 
+import com.xiaomi.nrb.superman.common.Result;
 import com.xiaomi.nrb.superman.domain.User;
+import com.xiaomi.nrb.superman.request.RegisterReq;
+import com.xiaomi.nrb.superman.response.UserInfoRes;
 
 /**
  * @author niuruobing@xiaomi.com
@@ -22,4 +25,21 @@ public interface UserService {
      * @since 2019-08-02 07:38
      */
     User getUserByOpenId(String openId);
+
+
+    /**
+     * 注册逻辑
+     *
+     * @author niuruobing@xiaomi.com
+     * @since 2019-08-02 14:24
+     */
+    Result<UserInfoRes> registerUser(RegisterReq registerReq);
+
+    /**
+     * 获取openId
+     *
+     * @author niuruobing@xiaomi.com
+     * @since 2019-08-02 14:28
+     */
+    String getOpneid(String code);
 }
