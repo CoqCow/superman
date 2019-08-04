@@ -2,21 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xiaomi.nrb.superman.dao.PlanMapper">
     <resultMap id="BaseResultMap" type="com.xiaomi.nrb.superman.domain.Plan">
-        <constructor>
-            <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long"/>
-            <arg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
-            <arg column="title" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="content" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="start_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="end_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="type" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="process_first_img" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="process_second_img" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="process_third_img" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="ctime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="utime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-        </constructor>
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="process_first_img" jdbcType="VARCHAR" property="processFirstImg"/>
+        <result column="process_second_img" jdbcType="VARCHAR" property="processSecondImg"/>
+        <result column="process_third_img" jdbcType="VARCHAR" property="processThirdImg"/>
+        <result column="ctime" jdbcType="TIMESTAMP" property="ctime"/>
+        <result column="utime" jdbcType="TIMESTAMP" property="utime"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, user_id, title, content, start_time, end_time, type, status, process_first_img, 
@@ -30,7 +28,8 @@
     </select>
 
 
-    <insert id="insertSelective" parameterType="com.xiaomi.nrb.superman.domain.Plan">
+    <insert id="insertSelective" parameterType="com.xiaomi.nrb.superman.domain.Plan" useGeneratedKeys="true"
+            keyProperty="id">
         insert into plan
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
