@@ -25,10 +25,10 @@ import java.util.Date;
 public class UserServiceImpl implements UserService {
 
 
-    @Value("${wechat.secretKey}")
+    @Value("${wechat.appId}")
     private String wechatAppId;
 
-    @Value("${wechat.appId}")
+    @Value("${wechat.secretKey}")
     private String wechatSecretKey;
 
     @Resource
@@ -69,6 +69,12 @@ public class UserServiceImpl implements UserService {
         }
         UserInfoRes userInfoRes = UserInfoRes.builder().user(newUser).token(tokenService.createToken(newUser)).build();
         return Result.ok(userInfoRes);
+    }
+
+    @Override
+    public User insertNotRegisterUser(User user) {
+        userMapper.insertSelective(user);
+        return userMapper.selectByOpenId(user.getOpenId());
     }
 
     public String getOpneid(String code) {

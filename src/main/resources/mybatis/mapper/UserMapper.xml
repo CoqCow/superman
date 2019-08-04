@@ -2,22 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xiaomi.nrb.superman.dao.UserMapper">
     <resultMap id="BaseResultMap" type="com.xiaomi.nrb.superman.domain.User">
-        <constructor>
-            <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long"/>
-            <arg column="open_id" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="union_id" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="nick_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="avartar_url" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="gender" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="country" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="province" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="city" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="mobile" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="grade" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="ctime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="utime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-        </constructor>
+            <id column="id" jdbcType="BIGINT" property="id"/>
+            <result column="open_id" jdbcType="VARCHAR" property="openId"/>
+            <result column="union_id" jdbcType="VARCHAR" property="unionId"/>
+            <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+            <result column="avartar_url" jdbcType="VARCHAR" property="avartarUrl"/>
+            <result column="gender" jdbcType="INTEGER" property="gender"/>
+            <result column="country" jdbcType="VARCHAR" property="country"/>
+            <result column="province" jdbcType="VARCHAR" property="province"/>
+            <result column="city" jdbcType="VARCHAR" property="city"/>
+            <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+            <result column="grade" jdbcType="INTEGER" property="grade"/>
+            <result column="status" jdbcType="INTEGER" property="status"/>
+            <result column="ctime" jdbcType="TIMESTAMP" property="ctime"/>
+            <result column="utime" jdbcType="TIMESTAMP" property="utime"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, open_id, union_id, nick_name, avartar_url, gender, country, province, city, mobile, 

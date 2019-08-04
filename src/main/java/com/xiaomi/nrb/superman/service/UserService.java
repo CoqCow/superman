@@ -35,6 +35,15 @@ public interface UserService {
      */
     Result<UserInfoRes> registerUser(RegisterReq registerReq);
 
+
+    /**
+     * 未注册用户
+     *
+     * @author niuruobing@xiaomi.com
+     * @since 2019-08-04 09:56
+     */
+    User insertNotRegisterUser(User user);
+
     /**
      * 获取openId
      *

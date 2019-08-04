@@ -31,6 +31,7 @@ public class TokenServiceImpl implements TokenService {
             calendar.add(Calendar.DATE, 2);
             String token = JWT.create()
                     .withHeader(map)
+                    .withClaim("openId", user.getOpenId())
                     .withClaim("id", user.getId() + "")
                     .withExpiresAt(calendar.getTime())
                     .sign(Algorithm.HMAC256(SECRET));
