@@ -1,5 +1,6 @@
 package com.xiaomi.nrb.superman.controller;
 
+import com.xiaomi.nrb.superman.annotation.CheckLogin;
 import com.xiaomi.nrb.superman.common.ApiEnum;
 import com.xiaomi.nrb.superman.common.Result;
 import com.xiaomi.nrb.superman.domain.User;
@@ -57,16 +58,6 @@ public class UserController {
 
             User user = userService.getUserByOpenId(openId);
 
-            //未注册用户
-            if (null == user) {
-                User newUser = new User();
-                newUser.setOpenId(openId);
-                newUser.setStatus(UseStatusEnum.NOT_REGISTER.getCode());
-                newUser.setCtime(new Date());
-                newUser = userService.insertNotRegisterUser(newUser);
-                String token = tokenService.createToken(newUser);
-                return Result.error(ApiEnum.USER_NOT_REGISTER.getCode(), token);
-            }
 
             //已注册用户
             if (null != user && user.getStatus() != UseStatusEnum.NOT_REGISTER.getCode()) {
@@ -75,7 +66,22 @@ public class UserController {
                 return Result.ok(userInfoRes);
             }
 
-            return Result.ok(null);
+
+            //未注册用户
+            User notRegisterUser = null;
+            if (null == user) {
+                user = new User();
+                user.setOpenId(openId);
+                user.setStatus(UseStatusEnum.NOT_REGISTER.getCode());
+                user.setCtime(new Date());
+                notRegisterUser = userService.insertNotRegisterUser(user);
+
+            } else {
+                notRegisterUser = userService.getUserByOpenId(openId);
+            }
+            String token = tokenService.createToken(notRegisterUser);
+
+            return Result.error(ApiEnum.USER_NOT_REGISTER.getCode(), token);
         } catch (Exception e) {
             log.error("UserController.getUserInfo.error:", e);
             return Result.fail(ApiEnum.ERROR.getCode());
@@ -85,8 +91,9 @@ public class UserController {
 
 
     @RequestMapping("/register")
+    @CheckLogin
     public Result register(@RequestBody RegisterReq request) {
-        if (StringUtils.isBlank(request.getNickName()) || StringUtils.isBlank(request.getAvartarUrl())) {
+        if (StringUtils.isBlank(request.getNickName()) || StringUtils.isBlank(request.getAvatarUrl())) {
             return Result.fail(ApiEnum.PARAM_INVALID.getCode());
         }
         try {

@@ -5,6 +5,7 @@ import com.xiaomi.nrb.superman.common.ApiEnum;
 import com.xiaomi.nrb.superman.common.Result;
 import com.xiaomi.nrb.superman.dao.UserMapper;
 import com.xiaomi.nrb.superman.domain.User;
+import com.xiaomi.nrb.superman.enums.UseStatusEnum;
 import com.xiaomi.nrb.superman.request.RegisterReq;
 import com.xiaomi.nrb.superman.response.UserInfoRes;
 import com.xiaomi.nrb.superman.service.TokenService;
@@ -49,23 +50,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result<UserInfoRes> registerUser(RegisterReq registerReq) {
-        String openId = getOpneid(registerReq.getCode());
-        if (StringUtils.isBlank(openId)) {
-            return Result.fail(ApiEnum.USER_CODE_EXPIRED.getCode());
-        }
+        String id = tokenService.getParam(registerReq.getToken(), "id");
         User user = new User();
-        user.setOpenId(openId);
+        user.setId(Long.parseLong(id));
+        user.setStatus(UseStatusEnum.NEW_REGISTER.getCode());
         user.setNickName(registerReq.getNickName());
-        user.setAvartarUrl(registerReq.getAvartarUrl());
+        user.setAvartarUrl(registerReq.getAvatarUrl());
         user.setGender(registerReq.getGender());
         user.setCountry(registerReq.getCountry());
         user.setProvince(registerReq.getProvince());
         user.setCity(registerReq.getCity());
         user.setCtime(new Date());
-        userMapper.insertSelective(user);
-        User newUser = userMapper.selectByOpenId(user.getOpenId());
+        userMapper.updateByPrimaryKeySelective(user);
+        User newUser = userMapper.selectByPrimaryKey(user.getId());
         if (null == newUser) {
-            Result.fail(ApiEnum.USER_REGISTER_ERROR.getCode());
+           return Result.fail(ApiEnum.USER_REGISTER_ERROR.getCode());
         }
         UserInfoRes userInfoRes = UserInfoRes.builder().user(newUser).token(tokenService.createToken(newUser)).build();
         return Result.ok(userInfoRes);
