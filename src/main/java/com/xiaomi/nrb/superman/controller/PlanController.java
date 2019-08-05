@@ -4,10 +4,9 @@ import com.xiaomi.nrb.superman.annotation.CheckLogin;
 import com.xiaomi.nrb.superman.common.ApiEnum;
 import com.xiaomi.nrb.superman.common.Result;
 import com.xiaomi.nrb.superman.domain.Plan;
-import com.xiaomi.nrb.superman.enums.PlanStatusEnum;
+import com.xiaomi.nrb.superman.dao.quary.PlanStatusEnum;
 import com.xiaomi.nrb.superman.request.AddPlanReq;
 import com.xiaomi.nrb.superman.request.ListPlanReq;
-import com.xiaomi.nrb.superman.request.RegisterReq;
 import com.xiaomi.nrb.superman.service.PlanService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +33,10 @@ public class PlanController {
     public Result addPlan(@RequestBody AddPlanReq request) {
 
         try {
+            //时间校验
+            if (null == request.getBeginTime() || null == request.getEndTime() || request.getEndTime() < request.getBeginTime()) {
+                return Result.error(ApiEnum.PARAM_INVALID.getCode(), ApiEnum.PARAM_INVALID.getValue() + "日期不合法");
+            }
             Plan plan = new Plan();
             plan.setTitle(request.getTitle());
             plan.setContent(request.getContent());
@@ -43,7 +46,7 @@ public class PlanController {
             plan.setCtime(new Date());
             plan.setType(request.getType());
             //状态不对 暂时不写
-            plan.setStatus(PlanStatusEnum.BEGIN.getCode());
+            plan.setStatus(PlanStatusEnum.NOT_BEGIN.getCode());
             return Result.ok(planService.addPlan(plan));
         } catch (Exception e) {
             log.error("PlanController.addPlan.error:", e);
@@ -56,10 +59,8 @@ public class PlanController {
     @CheckLogin
     public Result listPlan(@RequestBody ListPlanReq request) {
         try {
-            Plan plan = new Plan();
-            plan.setType(request.getType());
-            plan.setStatus(request.getStatus());
-            return Result.ok(planService.listPlan(plan));
+
+            return Result.ok(planService.listPlan(request));
         } catch (Exception e) {
             log.error("PlanController.listPlan.error:", e);
             return Result.fail(ApiEnum.ERROR.getCode());

@@ -1,4 +1,4 @@
-package com.xiaomi.nrb.superman.enums;
+package com.xiaomi.nrb.superman.dao.quary;
 
 
 /**
@@ -9,7 +9,7 @@ public enum PlanStatusEnum {
 
     //计划状态，1待发布、2未开始、3进行中、4已完成、5未完成
     NOT_RELEASED(1, "待发布"),
-    BEGIN(2, "未开始"),
+    NOT_BEGIN(2, "未开始"),
     ONGOING(3, "进行中"),
     COMPLETE(4, "已完成"),
     NOT_COMPLETE(5, "未完成");

@@ -1,15 +1,16 @@
-package com.xiaomi.nrb.superman.request;
+package com.xiaomi.nrb.superman.dao.quary;
 
+import com.xiaomi.nrb.superman.domain.BaseQuaryParam;
 import lombok.Data;
 
 import java.util.List;
 
 /**
  * @author niuruobing@xiaomi.com
- * @since 2019-08-05 10:13
+ * @since 2019-08-05 15:16
  **/
 @Data
-public class ListPlanReq extends BaseRequest {
+public class ListPlanQuaryParam extends BaseQuaryParam {
     /**
      * 开始时间
      */

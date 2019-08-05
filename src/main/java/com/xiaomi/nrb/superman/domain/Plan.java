@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class Plan extends BaseQuaryParam implements Serializable {
+public class Plan implements Serializable {
     /**
      * 计划id
      */

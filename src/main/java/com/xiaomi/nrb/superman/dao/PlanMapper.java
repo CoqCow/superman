@@ -1,5 +1,6 @@
 package com.xiaomi.nrb.superman.dao;
 
+import com.xiaomi.nrb.superman.dao.quary.ListPlanQuaryParam;
 import com.xiaomi.nrb.superman.domain.Plan;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
@@ -16,8 +17,8 @@ public interface PlanMapper {
 
     int updateByPrimaryKeySelective(Plan record);
 
-    List<Plan> listBySelective(Plan plan);
+    List<Plan> listBySelective(ListPlanQuaryParam quaryParam);
 
-    int countBySelective(Plan plan);
+    int countBySelective(ListPlanQuaryParam quaryParam);
 
 }
