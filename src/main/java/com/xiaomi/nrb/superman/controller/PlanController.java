@@ -6,6 +6,7 @@ import com.xiaomi.nrb.superman.common.Result;
 import com.xiaomi.nrb.superman.domain.Plan;
 import com.xiaomi.nrb.superman.dao.quary.PlanStatusEnum;
 import com.xiaomi.nrb.superman.request.AddPlanReq;
+import com.xiaomi.nrb.superman.request.BaseRequest;
 import com.xiaomi.nrb.superman.request.ListPlanReq;
 import com.xiaomi.nrb.superman.service.PlanService;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +62,17 @@ public class PlanController {
         try {
 
             return Result.ok(planService.listPlan(request));
+        } catch (Exception e) {
+            log.error("PlanController.listPlan.error:", e);
+            return Result.fail(ApiEnum.ERROR.getCode());
+        }
+    }
+
+    @RequestMapping("/detailPlan")
+    @CheckLogin
+    public Result detailPlan(@RequestBody BaseRequest request) {
+        try {
+            return Result.ok(planService.detailPlan(request));
         } catch (Exception e) {
             log.error("PlanController.listPlan.error:", e);
             return Result.fail(ApiEnum.ERROR.getCode());

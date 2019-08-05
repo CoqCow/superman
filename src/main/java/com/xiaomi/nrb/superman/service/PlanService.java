@@ -2,7 +2,9 @@ package com.xiaomi.nrb.superman.service;
 
 import com.xiaomi.nrb.superman.common.PageInfo;
 import com.xiaomi.nrb.superman.domain.Plan;
+import com.xiaomi.nrb.superman.request.BaseRequest;
 import com.xiaomi.nrb.superman.request.ListPlanReq;
+import com.xiaomi.nrb.superman.response.PlanInfo;
 import com.xiaomi.nrb.superman.response.PlanListInfo;
 
 
@@ -29,4 +31,11 @@ public interface PlanService {
      */
     PageInfo<PlanListInfo> listPlan(ListPlanReq request);
 
+    /**
+     * 计划详情
+     *
+     * @author niuruobing@xiaomi.com
+     * @since 2019-08-05 22:29
+     */
+    PlanInfo detailPlan(BaseRequest request);
 }

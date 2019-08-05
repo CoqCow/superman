@@ -6,11 +6,14 @@ import com.xiaomi.nrb.superman.dao.quary.ListPlanQuaryParam;
 import com.xiaomi.nrb.superman.domain.Plan;
 import com.xiaomi.nrb.superman.domain.User;
 import com.xiaomi.nrb.superman.dao.quary.PlanStatusEnum;
+import com.xiaomi.nrb.superman.request.BaseRequest;
 import com.xiaomi.nrb.superman.request.ListPlanReq;
+import com.xiaomi.nrb.superman.response.PlanInfo;
 import com.xiaomi.nrb.superman.response.PlanListInfo;
 import com.xiaomi.nrb.superman.service.PlanService;
 import com.xiaomi.nrb.superman.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -79,6 +82,24 @@ public class PlanServiceImpl implements PlanService {
 
 
         return PageInfo.<PlanListInfo>builder().list(listInfos).total(total).build();
+    }
+
+    @Override
+    public PlanInfo detailPlan(BaseRequest request) {
+        Plan plan = planMapper.selectByPrimaryKey(request.getPlanId());
+        if (plan == null) return null;
+        User user=userService.getUserByUserId(plan.getUserId());
+        PlanInfo planInfo = new PlanInfo();
+        BeanUtils.copyProperties(plan, planInfo);
+        planInfo.setNickName(user.getNickName());
+        planInfo.setAvartarUrl(user.getAvartarUrl());
+        planInfo.setGender(user.getGender());
+        if (request.getUserId() == plan.getUserId()) {
+            planInfo.setTag(true);
+        } else {
+            planInfo.setTag(false);
+        }
+        return planInfo;
     }
 
     /**

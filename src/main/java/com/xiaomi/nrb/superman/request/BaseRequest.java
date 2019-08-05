@@ -18,6 +18,10 @@ public class BaseRequest implements Serializable {
      */
     private Long userId;
     /**
+     * 计划id
+     */
+    private Long planId;
+    /**
      * 微信openId
      */
     private String openId;
