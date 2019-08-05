@@ -2,26 +2,16 @@ package com.xiaomi.nrb.superman.request;
 
 import lombok.Data;
 
-import java.util.Date;
-
 /**
  * @author niuruobing@xiaomi.com
- * @since 2019-08-04 21:25
+ * @since 2019-08-05 10:13
  **/
 @Data
-public class AddPlanReq extends BaseRequest {
-    /**
-     * 计划标题
-     */
-    private String title;
-    /**
-     * 计划内容
-     */
-    private String content;
+public class ListPlanReq extends BaseRequest {
     /**
      * 开始时间
      */
-    private Long beginTime;
+    private Long startTime;
     /**
      * 结束时间
      */

@@ -1,12 +1,16 @@
-package com.xiaomi.nrb.superman.domain;
+package com.xiaomi.nrb.superman.response;
 
 import lombok.Data;
 
-import java.io.Serializable;
-import java.util.Date;
 
+/**
+ * 计划列表实体
+ *
+ * @author niuruobing@xiaomi.com
+ * @since 2019-08-05 11:10
+ **/
 @Data
-public class Plan extends BaseQuaryParam implements Serializable {
+public class PlanListInfo {
     /**
      * 计划id
      */
@@ -26,11 +30,15 @@ public class Plan extends BaseQuaryParam implements Serializable {
     /**
      * 开始时间
      */
-    private Date startTime;
+    private String startTime;
     /**
      * 结束时间
      */
-    private Date endTime;
+    private String endTime;
+    /**
+     * 创建时间
+     */
+    private String ctime;
     /**
      * 计划类型，1私密计划、2公开计划、3挑战计划
      */
@@ -40,23 +48,15 @@ public class Plan extends BaseQuaryParam implements Serializable {
      */
     private Integer status;
     /**
-     * 照片1
+     * 微信昵称
      */
-    private String processFirstImg;
+    private String nickName;
     /**
-     * 照片2
+     * 微信头像
      */
-    private String processSecondImg;
+    private String avartarUrl;
     /**
-     * 照片3
+     * 性别 0未知、1男、2女
      */
-    private String processThirdImg;
-    /**
-     * 创建时间
-     */
-    private Date ctime;
-    /**
-     * 修改时间
-     */
-    private Date utime;
+    private Integer gender;
 }
