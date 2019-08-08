@@ -3,6 +3,8 @@ package com.xiaomi.nrb.superman.response;
 import com.xiaomi.nrb.superman.domain.Plan;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author niuruobing@xiaomi.com
  * @since 2019-08-05 22:26
@@ -13,6 +15,34 @@ public class PlanInfo extends Plan {
      * 是否是自己的计划
      */
     private boolean tag;
+    /**
+     * 是否围观
+     */
+    private boolean seeTag;
+    /**
+     * 是否点赞
+     */
+    private boolean zanTag;
+    /**
+     * 是否挑战
+     */
+    private boolean challengeTag;
+    /**
+     * 围观数量
+     */
+    private Integer seeNum;
+    /**
+     * 点赞数量
+     */
+    private Integer zanNum;
+    /**
+     * 挑战数量
+     */
+    private Integer challengeNum;
+    /**
+     * 点赞用户头像
+     */
+    private List<String> avartarUrls;
     /**
      * 微信昵称
      */

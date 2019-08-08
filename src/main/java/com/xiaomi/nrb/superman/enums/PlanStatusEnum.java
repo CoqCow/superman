@@ -1,4 +1,4 @@
-package com.xiaomi.nrb.superman.dao.quary;
+package com.xiaomi.nrb.superman.enums;
 
 
 /**

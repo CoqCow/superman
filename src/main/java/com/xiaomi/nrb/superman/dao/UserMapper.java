@@ -4,6 +4,8 @@ import com.xiaomi.nrb.superman.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Mapper
 @Component
 public interface UserMapper {
@@ -15,5 +17,7 @@ public interface UserMapper {
     User selectByOpenId(String openId);
 
     int updateByPrimaryKeySelective(User record);
+
+    List<String> selectAvartarUrls(List<Long> userIds);
 
 }

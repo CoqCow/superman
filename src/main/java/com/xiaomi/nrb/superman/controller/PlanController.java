@@ -4,7 +4,7 @@ import com.xiaomi.nrb.superman.annotation.CheckLogin;
 import com.xiaomi.nrb.superman.common.ApiEnum;
 import com.xiaomi.nrb.superman.common.Result;
 import com.xiaomi.nrb.superman.domain.Plan;
-import com.xiaomi.nrb.superman.dao.quary.PlanStatusEnum;
+import com.xiaomi.nrb.superman.enums.PlanStatusEnum;
 import com.xiaomi.nrb.superman.request.AddPlanReq;
 import com.xiaomi.nrb.superman.request.BaseRequest;
 import com.xiaomi.nrb.superman.request.ListPlanReq;

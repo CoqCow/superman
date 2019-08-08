@@ -2,10 +2,14 @@ package com.xiaomi.nrb.superman.service.impl;
 
 import com.xiaomi.nrb.superman.common.PageInfo;
 import com.xiaomi.nrb.superman.dao.PlanMapper;
+import com.xiaomi.nrb.superman.dao.RelationMapper;
+import com.xiaomi.nrb.superman.dao.UserMapper;
 import com.xiaomi.nrb.superman.dao.quary.ListPlanQuaryParam;
 import com.xiaomi.nrb.superman.domain.Plan;
+import com.xiaomi.nrb.superman.domain.Relation;
 import com.xiaomi.nrb.superman.domain.User;
-import com.xiaomi.nrb.superman.dao.quary.PlanStatusEnum;
+import com.xiaomi.nrb.superman.enums.PlanStatusEnum;
+import com.xiaomi.nrb.superman.enums.RelationTypeEnum;
 import com.xiaomi.nrb.superman.request.BaseRequest;
 import com.xiaomi.nrb.superman.request.ListPlanReq;
 import com.xiaomi.nrb.superman.response.PlanInfo;
@@ -35,6 +39,12 @@ public class PlanServiceImpl implements PlanService {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private UserMapper userMapper;
+
+    @Resource
+    private RelationMapper relationMapper;
 
     @Override
     public Plan addPlan(Plan plan) {
@@ -88,7 +98,7 @@ public class PlanServiceImpl implements PlanService {
     public PlanInfo detailPlan(BaseRequest request) {
         Plan plan = planMapper.selectByPrimaryKey(request.getPlanId());
         if (plan == null) return null;
-        User user=userService.getUserByUserId(plan.getUserId());
+        User user = userService.getUserByUserId(plan.getUserId());
         PlanInfo planInfo = new PlanInfo();
         BeanUtils.copyProperties(plan, planInfo);
         planInfo.setNickName(user.getNickName());
@@ -98,6 +108,41 @@ public class PlanServiceImpl implements PlanService {
             planInfo.setTag(true);
         } else {
             planInfo.setTag(false);
+        }
+        planInfo.setChallengeTag(false);
+        planInfo.setZanTag(false);
+        planInfo.setSeeTag(false);
+        //围观、点赞、挑战
+        Integer seeNum = 0;
+        Integer zanNum = 0;
+        Integer challengeNum = 0;
+        List<Long> userIds = new ArrayList<>();
+        Relation relation = new Relation();
+        relation.setUserId(request.getUserId());
+        relation.setPlanId(request.getPlanId());
+        List<Relation> relations = relationMapper.listBySelective(relation);
+        if (relations == null) {
+            relations = new ArrayList<>();
+        }
+        for (Relation k : relations) {
+            if (RelationTypeEnum.RELATION_SEE.getCode() == k.getType()) {
+                planInfo.setSeeTag(true);
+                seeNum++;
+                userIds.add(k.getUserId());
+            } else if (RelationTypeEnum.RELATION_UPVOTE.getCode() == k.getType()) {
+                planInfo.setZanTag(true);
+                zanNum++;
+            } else if (RelationTypeEnum.RELATION_CHALLEGE.getCode() == k.getType()) {
+                planInfo.setChallengeTag(true);
+                challengeNum++;
+            }
+        }
+        planInfo.setSeeNum(seeNum);
+        planInfo.setZanNum(zanNum);
+        planInfo.setChallengeNum(challengeNum);
+        if (!CollectionUtils.isEmpty(userIds)) {
+            List<String> strings=userMapper.selectAvartarUrls(userIds);
+            planInfo.setAvartarUrls(strings);
         }
         return planInfo;
     }

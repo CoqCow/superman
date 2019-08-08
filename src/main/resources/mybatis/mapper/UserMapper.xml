@@ -170,4 +170,12 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
+    <select id="selectAvartarUrls" parameterType="list" resultType="string">
+        select avartar_url
+        from user
+        where id in
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item,jdbcType=INTEGER}
+        </foreach>
+    </select>
 </mapper>
