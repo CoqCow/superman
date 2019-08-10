@@ -39,6 +39,11 @@ public class PlanInfo extends Plan {
      * 挑战数量
      */
     private Integer challengeNum;
+
+    /**
+     * 创建时间
+     */
+    private String ctimeForShow;
     /**
      * 点赞用户头像
      */

@@ -36,6 +36,18 @@ public class PlanListInfo {
      */
     private String endTime;
     /**
+     * 围观数量
+     */
+    private Integer seeNum;
+    /**
+     * 点赞数量
+     */
+    private Integer zanNum;
+    /**
+     * 挑战数量
+     */
+    private Integer challengeNum;
+    /**
      * 创建时间
      */
     private String ctime;

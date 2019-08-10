@@ -51,6 +51,7 @@ public class PlanServiceImpl implements PlanService {
         planMapper.insertSelective(plan);
         return parsePlanStatus(planMapper.selectByPrimaryKey(plan.getId()));
     }
+    private static final  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
 
     @Override
     public PageInfo<PlanListInfo> listPlan(ListPlanReq request) {
@@ -70,7 +71,7 @@ public class PlanServiceImpl implements PlanService {
             return PageInfo.<PlanListInfo>builder().list(new ArrayList<>()).total(total).build();
         }
         List<PlanListInfo> listInfos = new ArrayList<>();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
+
         list.forEach(k -> {
             parsePlanStatus(k);
             User user = userService.getUserByUserId(k.getUserId());
@@ -87,6 +88,28 @@ public class PlanServiceImpl implements PlanService {
             planListInfo.setNickName(user.getNickName());
             planListInfo.setAvartarUrl(user.getAvartarUrl());
             planListInfo.setGender(user.getGender());
+            Relation relation = new Relation();
+            relation.setUserId(request.getUserId());
+            relation.setPlanId(k.getId());
+            List<Relation> relations = relationMapper.listBySelective(relation);
+            if (relations == null) {
+                relations = new ArrayList<>();
+            }
+            Integer seeNum = 0;
+            Integer zanNum = 0;
+            Integer challengeNum = 0;
+            for (Relation relation1 : relations) {
+                if (RelationTypeEnum.RELATION_SEE.getCode() == relation1.getType()) {
+                    seeNum++;
+                } else if (RelationTypeEnum.RELATION_UPVOTE.getCode() == relation1.getType()) {
+                    zanNum++;
+                } else if (RelationTypeEnum.RELATION_CHALLEGE.getCode() == relation1.getType()) {
+                    challengeNum++;
+                }
+            }
+            planListInfo.setSeeNum(seeNum);
+            planListInfo.setZanNum(zanNum);
+            planListInfo.setChallengeNum(challengeNum);
             listInfos.add(planListInfo);
         });
 
@@ -101,6 +124,7 @@ public class PlanServiceImpl implements PlanService {
         User user = userService.getUserByUserId(plan.getUserId());
         PlanInfo planInfo = new PlanInfo();
         BeanUtils.copyProperties(plan, planInfo);
+        planInfo.setCtimeForShow(simpleDateFormat.format(plan.getCtime()));
         planInfo.setNickName(user.getNickName());
         planInfo.setAvartarUrl(user.getAvartarUrl());
         planInfo.setGender(user.getGender());
@@ -184,4 +208,5 @@ public class PlanServiceImpl implements PlanService {
         return plan;
 
     }
+
 }
