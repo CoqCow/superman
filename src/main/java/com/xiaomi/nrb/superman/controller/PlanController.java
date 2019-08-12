@@ -78,6 +78,7 @@ public class PlanController {
             return Result.fail(ApiEnum.ERROR.getCode());
         }
     }
+
     @RequestMapping("/donePlan")
     @CheckLogin
     public Result donePlan(@RequestBody BaseRequest request) {
@@ -85,6 +86,22 @@ public class PlanController {
             return Result.ok(planService.donePlan(request));
         } catch (Exception e) {
             log.error("PlanController.donePlan.error:", e);
+            return Result.fail(ApiEnum.ERROR.getCode());
+        }
+    }
+
+    @RequestMapping("/challengePlan")
+    @CheckLogin
+    public Result challengePlan(@RequestBody BaseRequest request) {
+        try {
+            boolean res = planService.challengePlan(request);
+            if (res) {
+                return Result.ok(null);
+            } else {
+                return Result.fail(ApiEnum.PLAN_CHALLENGE_FIAL.getCode());
+            }
+        } catch (Exception e) {
+            log.error("PlanController.challengePlan.error:", e);
             return Result.fail(ApiEnum.ERROR.getCode());
         }
     }

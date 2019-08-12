@@ -54,4 +54,12 @@ public interface PlanService {
      * @since 2019-08-12 11:37
      */
     boolean isYouPlan(Plan plan);
+
+    /**
+     * 挑战计划
+     *
+     * @author niuruobing@xiaomi.com
+     * @since 2019-08-12 14:12
+     */
+    boolean challengePlan(BaseRequest request);
 }

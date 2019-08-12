@@ -19,7 +19,12 @@ public enum ApiEnum {
     USER_NOT_REGISTER(1000, "用户没有注册"),
     USER_CODE_EXPIRED(1001, "微信code过期"),
     USER_EXIST(1002, "用户已经注册"),
-    USER_REGISTER_ERROR(1003, "用户注册失败");
+    USER_REGISTER_ERROR(1003, "用户注册失败"),
+
+
+    //计划
+    PLAN_CHALLENGE_FIAL(2000, "挑战计划失败");
+
     private int code;
     private String value;
 

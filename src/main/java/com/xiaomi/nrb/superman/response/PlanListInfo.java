@@ -59,6 +59,11 @@ public class PlanListInfo {
      * 计划状态，1待发布、2未开始、3进行中、4已完成、5未完成
      */
     private Integer status;
+
+    /**
+     * 动态消息
+     */
+    private String message;
     /**
      * 微信昵称
      */

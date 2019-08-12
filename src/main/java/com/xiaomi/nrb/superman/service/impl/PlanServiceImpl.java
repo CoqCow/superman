@@ -122,6 +122,18 @@ public class PlanServiceImpl implements PlanService {
             planListInfo.setSeeNum(seeNum);
             planListInfo.setZanNum(zanNum);
             planListInfo.setChallengeNum(challengeNum);
+
+            //是否为挑战计划
+            if (k.getType() == PlanTypeEnum.PLAN_CHALLENGE.getCode()) {
+                String message = "";
+                User user1 = userMapper.selectByPrimaryKey(k.getUserId());
+                message += planListInfo.getNickName();
+                message += " 在 ";
+                message += planListInfo.getStartTime();
+                message += "挑战了该计划";
+
+                planListInfo.setMessage(message);
+            }
             listInfos.add(planListInfo);
         });
 
@@ -286,5 +298,54 @@ public class PlanServiceImpl implements PlanService {
         }
 
         return false;
+    }
+
+    @Override
+    public boolean challengePlan(BaseRequest request) {
+
+
+        Plan plan = planMapper.selectByPrimaryKey(request.getPlanId());
+        if (null == plan) {
+            return false;
+        }
+        Relation oldRelation = new Relation();
+        oldRelation.setUserId(request.getUserId());
+        oldRelation.setPlanId(request.getPlanId());
+        oldRelation.setPlanUserId(plan.getUserId());
+        oldRelation.setType(RelationTypeEnum.RELATION_CHALLEGE.getCode());
+        int count = relationMapper.countBySelective(oldRelation);
+        //已经挑战过
+        if (count != 0) {
+            return false;
+        }
+        //挑战计划 复制要挑战的计划
+        Long startTime = plan.getStartTime().getTime();
+        Long endTime = plan.getEndTime().getTime();
+        Long curTime = System.currentTimeMillis();
+        Plan newPlan = new Plan();
+
+        newPlan.setUserId(request.getUserId());
+        newPlan.setTitle(plan.getTitle());
+        newPlan.setContent(plan.getContent());
+
+        newPlan.setStartTime(new Date(curTime));
+        newPlan.setEndTime(new Date(curTime + (endTime - startTime)));
+
+        newPlan.setType(PlanTypeEnum.PLAN_CHALLENGE.getCode());
+        newPlan.setStatus(PlanStatusEnum.ONGOING.getCode());
+        newPlan.setCtime(new Date());
+        newPlan.setUtime(new Date());
+        planMapper.insertSelective(newPlan);
+        //记录挑战日志
+        Relation relation = new Relation();
+        relation.setUserId(request.getUserId());
+        relation.setPlanId(request.getPlanId());
+        relation.setPlanUserId(plan.getUserId());
+        relation.setType(RelationTypeEnum.RELATION_CHALLEGE.getCode());
+        relation.setCtime(new Date(curTime));
+        relation.setUtime(new Date(curTime));
+        relationMapper.insertSelective(relation);
+
+        return true;
     }
 }
