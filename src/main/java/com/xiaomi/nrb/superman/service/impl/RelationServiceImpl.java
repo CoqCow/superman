@@ -70,6 +70,6 @@ public class RelationServiceImpl implements RelationService {
         }
 
 
-        return planInfo;
+        return  planService.detailPlan(request);
     }
 }
