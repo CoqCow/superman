@@ -24,6 +24,7 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,16 +47,26 @@ public class PlanServiceImpl implements PlanService {
     @Resource
     private RelationMapper relationMapper;
 
+    /**
+     * 点赞数量要求
+     */
+    private static final int YOU_PLAN_ZAN_NUM = 1;
+    /**
+     * 围观数量要求
+     */
+    private static final int YOU_PLAN_SEE_NUM = 5;
+
     @Override
     public Plan addPlan(Plan plan) {
         planMapper.insertSelective(plan);
         return parsePlanStatus(planMapper.selectByPrimaryKey(plan.getId()));
     }
-    private static final  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
+
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
 
     @Override
     public PageInfo<PlanListInfo> listPlan(ListPlanReq request) {
-
+        parseUserPlanStatus(request.getUserId());
         ListPlanQuaryParam quaryParam = new ListPlanQuaryParam();
         quaryParam.setStartTime(request.getStartTime());
         quaryParam.setEndTime(request.getEndTime());
@@ -124,6 +135,7 @@ public class PlanServiceImpl implements PlanService {
         User user = userService.getUserByUserId(plan.getUserId());
         PlanInfo planInfo = new PlanInfo();
         BeanUtils.copyProperties(plan, planInfo);
+        planInfo.setYouTag(isYouPlan(plan));
         planInfo.setCtimeForShow(simpleDateFormat.format(plan.getCtime()));
         planInfo.setNickName(user.getNickName());
         planInfo.setAvartarUrl(user.getAvartarUrl());
@@ -165,10 +177,24 @@ public class PlanServiceImpl implements PlanService {
         planInfo.setZanNum(zanNum);
         planInfo.setChallengeNum(challengeNum);
         if (!CollectionUtils.isEmpty(userIds)) {
-            List<String> strings=userMapper.selectAvartarUrls(userIds);
+            List<String> strings = userMapper.selectAvartarUrls(userIds);
             planInfo.setAvartarUrls(strings);
         }
         return planInfo;
+    }
+
+    @Override
+    public PlanInfo donePlan(BaseRequest request) {
+        Plan plan = planMapper.selectByPrimaryKey(request.getPlanId());
+        if (null != plan && PlanStatusEnum.ONGOING.getCode() == plan.getStatus()) {
+            plan = new Plan();
+            plan.setId(request.getPlanId());
+            plan.setStatus(PlanStatusEnum.COMPLETE.getCode());
+            plan.setUtime(new Date());
+            planMapper.updateByPrimaryKeySelective(plan);
+        }
+
+        return detailPlan(request);
     }
 
     /**
@@ -209,4 +235,52 @@ public class PlanServiceImpl implements PlanService {
 
     }
 
+
+    /**
+     * 实时计算用户所有计划状态
+     *
+     * @author niuruobing@xiaomi.com
+     * @since 2019-08-11 17:04
+     */
+    private void parseUserPlanStatus(Long userId) {
+        if (null == userId) {
+            return;
+        }
+        ListPlanQuaryParam quaryParam = new ListPlanQuaryParam();
+        quaryParam.setUserId(userId);
+        List<Plan> list = planMapper.listBySelective(quaryParam);
+        list.forEach(k -> {
+            parsePlanStatus(k);
+        });
+    }
+
+    /**
+     * 判断是否为you计划
+     *
+     * @author niuruobing@xiaomi.com
+     * @since 2019-08-12 11:03
+     */
+    private boolean isYouPlan(Plan plan) {
+
+        Relation relation = new Relation();
+        relation.setPlanId(plan.getId());
+        //1、计划已完成、点赞数量满足
+        if (plan.getStatus() == PlanStatusEnum.COMPLETE.getCode()) {
+            relation.setType(RelationTypeEnum.RELATION_UPVOTE.getCode());
+            int zanNum = relationMapper.countBySelective(relation);
+            if (zanNum >= YOU_PLAN_ZAN_NUM) {
+                return true;
+            }
+        }
+        //2、计划进行中、围观数量满足
+        if (plan.getStatus() == PlanStatusEnum.ONGOING.getCode()) {
+            relation.setType(RelationTypeEnum.RELATION_SEE.getCode());
+            int seeNum = relationMapper.countBySelective(relation);
+            if (seeNum >= YOU_PLAN_SEE_NUM) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -12,6 +12,10 @@ import java.util.List;
 @Data
 public class ListPlanQuaryParam extends BaseQuaryParam {
     /**
+     * 用户id
+     */
+    private Long userId;
+    /**
      * 开始时间
      */
     private Long startTime;

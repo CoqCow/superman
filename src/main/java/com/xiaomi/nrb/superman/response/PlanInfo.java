@@ -28,6 +28,10 @@ public class PlanInfo extends Plan {
      */
     private boolean challengeTag;
     /**
+     * 是否为you计划
+     */
+    private boolean youTag;
+    /**
      * 围观数量
      */
     private Integer seeNum;

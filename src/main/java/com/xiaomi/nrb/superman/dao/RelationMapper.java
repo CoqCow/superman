@@ -19,4 +19,6 @@ public interface RelationMapper {
 
     List<Relation> listBySelective(Relation record);
 
+    int countBySelective(Relation record);
+
 }

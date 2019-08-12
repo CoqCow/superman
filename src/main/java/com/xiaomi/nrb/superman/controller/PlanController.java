@@ -78,4 +78,14 @@ public class PlanController {
             return Result.fail(ApiEnum.ERROR.getCode());
         }
     }
+    @RequestMapping("/donePlan")
+    @CheckLogin
+    public Result donePlan(@RequestBody BaseRequest request) {
+        try {
+            return Result.ok(planService.donePlan(request));
+        } catch (Exception e) {
+            log.error("PlanController.donePlan.error:", e);
+            return Result.fail(ApiEnum.ERROR.getCode());
+        }
+    }
 }

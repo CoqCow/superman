@@ -125,4 +125,24 @@
             </if>
         </where>
     </select>
+    <select id="countBySelective" parameterType="com.xiaomi.nrb.superman.domain.Relation" resultType="int">
+        select
+        COUNT(1)
+        from relation
+        <where>
+            and status=1
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="planId != null">
+                and plan_id = #{planId,jdbcType=BIGINT}
+            </if>
+            <if test="planUserId != null">
+                and plan_user_id = #{planUserId,jdbcType=BIGINT}
+            </if>
+            <if test="type != null">
+                and type = #{type,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
 </mapper>

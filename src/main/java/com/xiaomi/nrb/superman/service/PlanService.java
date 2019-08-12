@@ -38,4 +38,12 @@ public interface PlanService {
      * @since 2019-08-05 22:29
      */
     PlanInfo detailPlan(BaseRequest request);
+
+    /**
+     * 完成计划
+     *
+     * @author niuruobing@xiaomi.com
+     * @since 2019-08-11 16:56
+     */
+    PlanInfo donePlan(BaseRequest request);
 }
