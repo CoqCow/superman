@@ -1,7 +1,10 @@
 package com.xiaomi.nrb.superman.service.impl;
 
+import com.xiaomi.nrb.superman.dao.PlanMapper;
 import com.xiaomi.nrb.superman.dao.RelationMapper;
+import com.xiaomi.nrb.superman.domain.Plan;
 import com.xiaomi.nrb.superman.domain.Relation;
+import com.xiaomi.nrb.superman.enums.PlanTypeEnum;
 import com.xiaomi.nrb.superman.enums.RelationTypeEnum;
 import com.xiaomi.nrb.superman.request.AddRelationReq;
 import com.xiaomi.nrb.superman.response.PlanInfo;
@@ -24,6 +27,9 @@ public class RelationServiceImpl implements RelationService {
 
     @Resource
     private RelationMapper relationMapper;
+
+    @Resource
+    private PlanMapper planMapper;
 
     @Override
     public PlanInfo addRelation(AddRelationReq request) {
@@ -53,6 +59,17 @@ public class RelationServiceImpl implements RelationService {
         relation.setCtime(new Date());
         relationMapper.insertSelective(relation);
 
-        return planService.detailPlan(request);
+        //是否更新为YOU计划
+        if (planInfo.getType() != PlanTypeEnum.PLAN_YOU.getCode() && planService.isYouPlan(planInfo)) {
+            planInfo.setYouTag(true);
+            Plan plan = new Plan();
+            plan.setId(planInfo.getId());
+            plan.setType(PlanTypeEnum.PLAN_YOU.getCode());
+            planMapper.updateByPrimaryKeySelective(plan);
+
+        }
+
+
+        return planInfo;
     }
 }

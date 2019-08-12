@@ -19,9 +19,9 @@ public class ListPlanReq extends BaseRequest {
      */
     private Long endTime;
     /**
-     * 计划类型，1私密计划、2公开计划、3挑战计划
+     * 计划类型，1私密计划、2公开计划、3挑战计划、4YOU计划
      */
-    private Integer type;
+    private List<Integer> types;
     /**
      * 计划状态，1待发布、2未开始、3进行中、4已完成、5未完成
      */

@@ -171,6 +171,12 @@
                     #{item,jdbcType=INTEGER}
                 </foreach>
             </if>
+            <if test="types != null">
+                and type in
+                <foreach collection="types" item="item" index="index" open="(" close=")" separator=",">
+                    #{item,jdbcType=INTEGER}
+                </foreach>
+            </if>
         </where>
         order by ctime desc
         <include refid="page_sql"/>
@@ -186,6 +192,12 @@
             <if test="status != null">
                 and status in
                 <foreach collection="status" item="item" index="index" open="(" close=")" separator=",">
+                    #{item,jdbcType=INTEGER}
+                </foreach>
+            </if>
+            <if test="types != null">
+                and type in
+                <foreach collection="types" item="item" index="index" open="(" close=")" separator=",">
                     #{item,jdbcType=INTEGER}
                 </foreach>
             </if>

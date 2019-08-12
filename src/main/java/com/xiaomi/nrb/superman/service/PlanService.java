@@ -46,4 +46,12 @@ public interface PlanService {
      * @since 2019-08-11 16:56
      */
     PlanInfo donePlan(BaseRequest request);
+
+    /**
+     * 判断是否为YOU计划
+     *
+     * @author niuruobing@xiaomi.com
+     * @since 2019-08-12 11:37
+     */
+    boolean isYouPlan(Plan plan);
 }

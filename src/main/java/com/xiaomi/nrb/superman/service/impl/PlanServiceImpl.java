@@ -9,6 +9,7 @@ import com.xiaomi.nrb.superman.domain.Plan;
 import com.xiaomi.nrb.superman.domain.Relation;
 import com.xiaomi.nrb.superman.domain.User;
 import com.xiaomi.nrb.superman.enums.PlanStatusEnum;
+import com.xiaomi.nrb.superman.enums.PlanTypeEnum;
 import com.xiaomi.nrb.superman.enums.RelationTypeEnum;
 import com.xiaomi.nrb.superman.request.BaseRequest;
 import com.xiaomi.nrb.superman.request.ListPlanReq;
@@ -70,7 +71,7 @@ public class PlanServiceImpl implements PlanService {
         ListPlanQuaryParam quaryParam = new ListPlanQuaryParam();
         quaryParam.setStartTime(request.getStartTime());
         quaryParam.setEndTime(request.getEndTime());
-        quaryParam.setType(request.getType());
+        quaryParam.setTypes(request.getTypes());
         quaryParam.setStatus(request.getStatus());
         quaryParam.setPageNo((request.getPageNo() - 1) * request.getPageSize());
         quaryParam.setPageSize(request.getPageSize());
@@ -260,8 +261,11 @@ public class PlanServiceImpl implements PlanService {
      * @author niuruobing@xiaomi.com
      * @since 2019-08-12 11:03
      */
-    private boolean isYouPlan(Plan plan) {
-
+    public boolean isYouPlan(Plan plan) {
+        //私密计划
+        if (plan.getType() == PlanTypeEnum.PLAN_PRIVITE.getCode()) {
+            return false;
+        }
         Relation relation = new Relation();
         relation.setPlanId(plan.getId());
         //1、计划已完成、点赞数量满足

@@ -9,7 +9,8 @@ public enum PlanTypeEnum {
 
     PLAN_PRIVITE(1, "私密计划"),
     PLAN_PUBLIC(2, "公开计划"),
-    PLAN_CHALLENGE(3, "挑战计划");
+    PLAN_CHALLENGE(3, "挑战计划"),
+    PLAN_YOU(4, "YOU计划");
 
     private int code;
     private String desc;
