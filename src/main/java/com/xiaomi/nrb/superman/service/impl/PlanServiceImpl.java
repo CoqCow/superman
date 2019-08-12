@@ -66,19 +66,45 @@ public class PlanServiceImpl implements PlanService {
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
 
     @Override
-    public PageInfo<PlanListInfo>   listPlan(ListPlanReq request) {
-        parseUserPlanStatus(request.getUserId());
-        ListPlanQuaryParam quaryParam = new ListPlanQuaryParam();
-        quaryParam.setStartTime(request.getStartTime());
-        quaryParam.setEndTime(request.getEndTime());
-        quaryParam.setTypes(request.getTypes());
-        quaryParam.setStatus(request.getStatus());
-        quaryParam.setPageNo((request.getPageNo() - 1) * request.getPageSize());
-        quaryParam.setPageSize(request.getPageSize());
+    public PageInfo<PlanListInfo> listPlan(ListPlanReq request) {
+
+        List<Plan> list = null;
+        int total = 0;
+        if ("1".equals(request.getUpvote())) {
+            Relation relation = new Relation();
+            relation.setUserId(request.getUserId());
+            relation.setType(RelationTypeEnum.RELATION_UPVOTE.getCode());
+            List<Relation> relations = relationMapper.listBySelective(relation);
+            if (CollectionUtils.isEmpty(relations)) {
+                return PageInfo.<PlanListInfo>builder().list(new ArrayList<>()).total(0).build();
+            }
+
+            List<Long> planIds = new ArrayList<>();
+            relations.forEach(k -> {
+                planIds.add(k.getPlanId());
+            });
+            ListPlanQuaryParam quaryParam = new ListPlanQuaryParam();
+            quaryParam.setPlanIds(planIds);
+            list = planMapper.listBySelective(quaryParam);
+            total = planIds.size();
+        } else {
+            ListPlanQuaryParam quaryParam = new ListPlanQuaryParam();
+            quaryParam.setStartTime(request.getStartTime());
+            quaryParam.setEndTime(request.getEndTime());
+            quaryParam.setTypes(request.getTypes());
+            quaryParam.setStatus(request.getStatus());
+            quaryParam.setPageNo((request.getPageNo() - 1) * request.getPageSize());
+            quaryParam.setPageSize(request.getPageSize());
+            if ("personal".equals(request.getSource())) {
+                parseUserPlanStatus(request.getUserId());
+                quaryParam.setUserId(request.getUserId());
+            }
+
+            list = planMapper.listBySelective(quaryParam);
+            total = planMapper.countBySelective(quaryParam);
+        }
 
 
-        List<Plan> list = planMapper.listBySelective(quaryParam);
-        int total = planMapper.countBySelective(quaryParam);
         if (CollectionUtils.isEmpty(list)) {
             return PageInfo.<PlanListInfo>builder().list(new ArrayList<>()).total(total).build();
         }
@@ -125,7 +151,7 @@ public class PlanServiceImpl implements PlanService {
 
             //是否为挑战计划
             if (k.getType() == PlanTypeEnum.PLAN_CHALLENGE.getCode()) {
-                String message = "";
+                String message = "用户:";
                 User user1 = userMapper.selectByPrimaryKey(k.getUserId());
                 message += planListInfo.getNickName();
                 message += " 在 ";

@@ -26,4 +26,12 @@ public class ListPlanReq extends BaseRequest {
      * 计划状态，1待发布、2未开始、3进行中、4已完成、5未完成
      */
     private List<Integer> status;
+    /**
+     * 页面来源
+     */
+    private String source;
+    /**
+     * 点赞标记
+     */
+    private String upvote;
 }

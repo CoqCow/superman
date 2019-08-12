@@ -16,6 +16,10 @@ public class ListPlanQuaryParam extends BaseQuaryParam {
      */
     private Long userId;
     /**
+     * 计划ids
+     */
+    private List<Long> planIds;
+    /**
      * 开始时间
      */
     private Long startTime;

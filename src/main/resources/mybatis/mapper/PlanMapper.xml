@@ -162,6 +162,15 @@
         <include refid="Base_Column_List"/>
         from plan
         <where>
+            <if test="planIds != null">
+                and id in
+                <foreach collection="planIds" item="item" index="index" open="(" close=")" separator=",">
+                    #{item,jdbcType=INTEGER}
+                </foreach>
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
             <if test="type != null">
                 and type = #{type,jdbcType=INTEGER}
             </if>
