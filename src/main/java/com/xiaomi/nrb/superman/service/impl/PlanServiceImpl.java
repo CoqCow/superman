@@ -66,7 +66,7 @@ public class PlanServiceImpl implements PlanService {
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
 
     @Override
-    public PageInfo<PlanListInfo> listPlan(ListPlanReq request) {
+    public PageInfo<PlanListInfo>   listPlan(ListPlanReq request) {
         parseUserPlanStatus(request.getUserId());
         ListPlanQuaryParam quaryParam = new ListPlanQuaryParam();
         quaryParam.setStartTime(request.getStartTime());
@@ -101,7 +101,7 @@ public class PlanServiceImpl implements PlanService {
             planListInfo.setAvartarUrl(user.getAvartarUrl());
             planListInfo.setGender(user.getGender());
             Relation relation = new Relation();
-            relation.setUserId(request.getUserId());
+            //relation.setUserId(request.getUserId());
             relation.setPlanId(k.getId());
             List<Relation> relations = relationMapper.listBySelective(relation);
             if (relations == null) {
@@ -168,7 +168,7 @@ public class PlanServiceImpl implements PlanService {
         List<Long> zanUserIds = new ArrayList<>();
         List<Long> challengeUserIds = new ArrayList<>();
         Relation relation = new Relation();
-        relation.setUserId(request.getUserId());
+        //relation.setUserId(request.getUserId());
         relation.setPlanId(request.getPlanId());
         List<Relation> relations = relationMapper.listBySelective(relation);
         if (relations == null) {
