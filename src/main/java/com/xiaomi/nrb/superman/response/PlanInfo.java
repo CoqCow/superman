@@ -51,7 +51,11 @@ public class PlanInfo extends Plan {
     /**
      * 点赞用户头像
      */
-    private List<String> avartarUrls;
+    private List<String> zanAvartarUrls;
+    /**
+     * 挑战用户头像
+     */
+    private List<String> challengeAvartarUrls;
     /**
      * 微信昵称
      */

@@ -165,7 +165,8 @@ public class PlanServiceImpl implements PlanService {
         Integer seeNum = 0;
         Integer zanNum = 0;
         Integer challengeNum = 0;
-        List<Long> userIds = new ArrayList<>();
+        List<Long> zanUserIds = new ArrayList<>();
+        List<Long> challengeUserIds = new ArrayList<>();
         Relation relation = new Relation();
         relation.setUserId(request.getUserId());
         relation.setPlanId(request.getPlanId());
@@ -177,21 +178,26 @@ public class PlanServiceImpl implements PlanService {
             if (RelationTypeEnum.RELATION_SEE.getCode() == k.getType()) {
                 planInfo.setSeeTag(true);
                 seeNum++;
-                userIds.add(k.getUserId());
+                zanUserIds.add(k.getUserId());
             } else if (RelationTypeEnum.RELATION_UPVOTE.getCode() == k.getType()) {
                 planInfo.setZanTag(true);
                 zanNum++;
             } else if (RelationTypeEnum.RELATION_CHALLEGE.getCode() == k.getType()) {
                 planInfo.setChallengeTag(true);
+                challengeUserIds.add(k.getUserId());
                 challengeNum++;
             }
         }
         planInfo.setSeeNum(seeNum);
         planInfo.setZanNum(zanNum);
         planInfo.setChallengeNum(challengeNum);
-        if (!CollectionUtils.isEmpty(userIds)) {
-            List<String> strings = userMapper.selectAvartarUrls(userIds);
-            planInfo.setAvartarUrls(strings);
+        if (!CollectionUtils.isEmpty(zanUserIds)) {
+            List<String> strings = userMapper.selectAvartarUrls(zanUserIds);
+            planInfo.setZanAvartarUrls(strings);
+        }
+        if (!CollectionUtils.isEmpty(challengeUserIds)) {
+            List<String> strings = userMapper.selectAvartarUrls(challengeUserIds);
+            planInfo.setChallengeAvartarUrls(strings);
         }
         return planInfo;
     }
