@@ -35,7 +35,7 @@ public class PlanController {
 
         try {
             //时间校验
-            if (null == request.getBeginTime() || null == request.getEndTime() || request.getEndTime() < request.getBeginTime()) {
+            if (null == request.getBeginTime() || null == request.getEndTime() || request.getEndTime() <= request.getBeginTime()) {
                 return Result.error(ApiEnum.PARAM_INVALID.getCode(), ApiEnum.PARAM_INVALID.getValue() + "日期不合法");
             }
             Plan plan = new Plan();
