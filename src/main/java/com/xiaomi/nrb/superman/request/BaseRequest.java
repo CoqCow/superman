@@ -32,23 +32,23 @@ public class BaseRequest implements Serializable {
     /**
      * 分页参数
      */
-    private Integer pageNo = 1;
+    private Integer pageNo;
     /**
      * 分页参数
      */
-    private Integer pageSize = 10;
+    private Integer pageSize;
 
     public Integer getPageNo() {
         if (pageNo == null || pageNo < 1 || pageNo > MAX_PAGE) {
             return 1;
         }
-        return 1;
+        return pageNo;
     }
 
     public Integer getPageSize() {
         if (pageSize == null || pageSize < 1 || pageSize > MAX_PAGE_SIZE) {
             return 10;
         }
-        return 10;
+        return pageSize;
     }
 }
