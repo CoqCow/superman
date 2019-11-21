@@ -7,7 +7,6 @@ import com.xiaomi.nrb.superman.common.ApiEnum;
 import com.xiaomi.nrb.superman.common.Result;
 import com.xiaomi.nrb.superman.request.BaseRequest;
 import com.xiaomi.nrb.superman.service.TokenService;
-import com.xiaomi.nrb.superman.service.impl.TokenServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -49,6 +48,9 @@ public class LoginAspect {
             String methodName = methodSignature.getName();
             //访问路径不存在
             if ("errorHtml".equals(methodName)) {
+                return joinPoint.proceed();
+            }
+            if ((methodName.contains("Test"))) {
                 return joinPoint.proceed();
             }
             // 拦截处理逻辑，打印出入参数
