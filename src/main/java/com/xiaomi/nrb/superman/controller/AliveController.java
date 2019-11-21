@@ -1,6 +1,8 @@
 package com.xiaomi.nrb.superman.controller;
 
 import com.xiaomi.nrb.superman.common.Result;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,8 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/superman")
 public class AliveController {
 
+    private String message;
+
+    @RequestMapping("/message")
+    private Result messageTest(@RequestBody String message) {
+        this.message = message;
+        return Result.ok(message);
+    }
+
     @RequestMapping("/alive")
     public Result aliveTest() {
-        return Result.ok("yes");
+        return Result.ok("message" + message);
     }
 }
